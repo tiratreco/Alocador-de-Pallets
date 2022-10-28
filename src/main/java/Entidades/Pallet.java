@@ -1,6 +1,6 @@
 package Entidades;
 
-import Solução.Cliente;
+import Solucao.Cliente;
 import lombok.Getter;
 import lombok.Setter;
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
@@ -11,10 +11,12 @@ import org.optaplanner.core.api.domain.variable.PlanningVariable;
 @PlanningEntity
 public class Pallet {
 
-    @PlanningVariable
+    @PlanningVariable(valueRangeProviderRefs = {"veiculoRange", nullable = true})
     private Veiculo veiculo;
 
     private Cliente cliente;
 
     private int pontuacao;
+
+    private double peso;
 }

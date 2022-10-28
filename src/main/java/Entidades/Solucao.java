@@ -1,6 +1,6 @@
 package Entidades;
 
-import Solução.Estoque;
+import Solucao.Estoque;
 import lombok.Getter;
 import lombok.Setter;
 import org.optaplanner.core.api.domain.solution.PlanningEntityCollectionProperty;

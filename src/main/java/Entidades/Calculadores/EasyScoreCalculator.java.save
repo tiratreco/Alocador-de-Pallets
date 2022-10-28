@@ -1,0 +1,37 @@
+
+
+public class EasyScoreCalculator implements EasyScoreCalculator<Solucao, HardSoftScore> {
+
+    @Override
+    public HardSoftScore calculateScore(Solucao solucao) {
+        List<Veiculo> veiculos = solucao.getVeiculos();
+	    List<Pallet> pallets = solucao.getPallets();
+        int hardScore = 0;
+	    int softScore = 0;
+
+    	Map<Veiculo, List<Pallet>> palletsPorVeiculo = pallets.stream().collect(Collectors.groupingBy(p -> p.getVeiculo()));
+
+        for (Map.Entry<Veiculo, List<Pallet>> entry : palletsPorVeiculo.entrySet()) {
+            Veiculo veiculo = entry.getKey();
+            List<Pallet> pallets = entry.getValue();
+            bool mesmoTipo = true;
+
+            double peso = 0;
+            for (Pallet p : pallets){
+                if (p.getTipo() != entry.
+                peso += p.getPeso();
+                softscore += p.getScore();
+            }
+            if (peso > veiculo.getPesoMax || pallets.size() > veiculo.getQuantidadeMax){
+                hardscore--;
+            }
+            if (peso < veiculo.getPesoMin && pallets.size() < veiculo.getQuantidadeMin(){
+                hardscore--;
+            }
+            
+
+        }
+        return HardSoftScore.of(hardScore, softScore);
+    }
+
+}
