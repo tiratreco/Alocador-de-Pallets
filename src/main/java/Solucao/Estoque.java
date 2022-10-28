@@ -12,6 +12,11 @@ public class Estoque {
     private Map<String, Material> estoque;
 
     public Estoque (List<Material> materiais) {
-        
+        this.estoque = new HashMap<>();
+        materiais.foreach(material->this.estoque.put(material.getCodigo(), material));
+    }
+
+    public bool consumir (Pallet pallet){
+        return true;
     }
 }
