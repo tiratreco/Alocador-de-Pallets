@@ -11,5 +11,5 @@ public class Material {
 
     private int quantidade;
 
-    private List<Material> alternativas;
+    private List<Material> alternativo;
 }

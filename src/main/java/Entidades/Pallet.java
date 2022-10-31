@@ -16,6 +16,10 @@ public class Pallet {
 
     private Cliente cliente;
 
+    private String material;
+
+    private int caixas;
+
     private int pontuacao;
 
     private double peso;
