@@ -1,37 +1,38 @@
 package Solucao;
 
-import Solucao.Material;
+import Entidades.Pallet;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
+
+
 @Getter
 @Setter
-public static Map<String, Material> estoqueInicial = null;
-
 public class Estoque {
-    private Map<String, Material> estoque;
+    static Map<Material, Integer> estoqueInicial = null;
 
-    public Estoque (List<Material> materiais) {
-        this.estoqueInicial = new HashMap<>();
-        materiais.foreach(material->this.estoqueInicial.put(material.getCodigo(), material));
-        return Estoque();
+    private Map<Material, Integer> estoque;
+
+    public Estoque (Map<Material, Integer> materiais) {
+        estoqueInicial = materiais;
+        new Estoque();
     }
 
     public Estoque (){
         this.estoque = estoqueInicial;
     }
 
-    public existeEstoqueMaterial (Material material, int quantidade) {
-        return estoque.get(material.getCodigo()) >= quantidade;
+    public boolean existeEstoqueMaterial (Material material, int quantidade) {
+        return estoque.get(material) >= quantidade;
     }
 
     public Material existeEstoquePallet(Pallet pallet){
-        if (existeEstoqueMaterial(pallet.getMaterial(), pallet.getCaixas())){
-            return pallet.getMaterial;
-        }
-        if (pallet.getCliente().getAceitaEstoqueAlternativo()){
+        if (existeEstoqueMaterial(pallet.getMaterial(), pallet.getCaixas())) return pallet.getMaterial();
+        if (pallet.getCliente().isAceitaEstoqueAlternativo()){
             for (Material m : pallet.getMaterial().getAlternativo()){
                 if (existeEstoqueMaterial(m, pallet.getCaixas())) return m;
             }
@@ -39,10 +40,11 @@ public class Estoque {
         return null;
     }
 
-    public bool consumir (Pallet pallet){
+    public boolean consumirPallet (Pallet pallet){
+        if  (pallet.getNumeroRemessa() != null) return true;
         Material m = existeEstoquePallet(pallet);
         if (m == null) return false;
-        estoque.get(material.getCodigo()) -= pallet.getCaixas();
+        estoque.put(m, estoque.get(m) - pallet.getCaixas());
         return true;
     }
 }

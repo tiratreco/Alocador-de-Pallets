@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<solver>
+    <!-- Define the model -->
+    <solutionClass>Entidades.Solucao</solutionClass>
+    <entityClass>Entidades.Pallet</entityClass>
+
+    <scoreDirectorFactory>
+        <easyScoreCalculatorClass>Entidades.Calculadores.EasyScore</easyScoreCalculatorClass>
+    </scoreDirectorFactory>
+
+    <!-- Configure the optimization algorithms (optional) -->
+    <!--
+    <termination>
+        ...
+    </termination>
+    <constructionHeuristic>
+        ...
+    </constructionHeuristic>
+    <localSearch>
+        ...
+    </localSearch>
+    -->
+</solver>

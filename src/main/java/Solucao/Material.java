@@ -9,7 +9,7 @@ import java.util.List;
 public class Material {
     private String codigo;
 
-    private int quantidade;
+    private String tipo;
 
     private List<Material> alternativo;
 }

@@ -1,8 +1,9 @@
-Solucao/Material.class
-Entidades/Veiculo.class
-Importador/Importador.class
-Entidades/Pallet.class
-Entidades/Solucao.class
+Entidades\Pallet.class
+Entidades\Calculadores\EasyScore.class
+Entidades\Solucao.class
+Entidades\Veiculo.class
+Solucao\Material.class
+Solucao\Estoque.class
 Otimizador.class
-Solucao/Cliente.class
-Solucao/Estoque.class
+Importador\Importador.class
+Solucao\Cliente.class

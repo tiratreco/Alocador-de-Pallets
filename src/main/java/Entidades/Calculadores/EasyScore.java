@@ -1,28 +1,39 @@
+package Entidades.Calculadores;
 
+import Entidades.Pallet;
+import Entidades.Solucao;
+import Entidades.Veiculo;
+import Solucao.Estoque;
+import org.optaplanner.core.api.score.buildin.hardmediumsoft.HardMediumSoftScore;
+import org.optaplanner.core.api.score.calculator.EasyScoreCalculator;
 
-public class EasyScoreCalculator implements EasyScoreCalculator<Solucao, HardSoftScore> {
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+public class EasyScore implements EasyScoreCalculator<Solucao, HardMediumSoftScore> {
 
     @Override
     public HardMediumSoftScore calculateScore(Solucao solucao) {
 	    List<Pallet> palletList = solucao.getPallets();
-        Estoque estoque = solucao.getEstoque();
         int hardScore = 0;
         int mediumScore = 0;
 	    int softScore = 0;
 
         Map<Veiculo, List<Pallet>> palletsPorVeiculo = palletList.stream().collect(Collectors.groupingBy(p -> p.getVeiculo()));
-        Estoque.reset();
+        Estoque estoque = new Estoque();
+        solucao.setEstoque(estoque);
         for (Map.Entry<Veiculo, List<Pallet>> entry : palletsPorVeiculo.entrySet()) {
             Veiculo veiculo = entry.getKey();
             List<Pallet> pallets = entry.getValue();
-            bool mesmoTipo = true;
+            boolean mesmoTipo = true;
             double pesoTotal = 0;
 
             for (Pallet p : pallets){
-                if (p.getTipo() != pallets.get(0)) mesmoTipo = false;
-                if (!estoque.consumir(p)) hardScore--;
+                if (!p.getMaterial().getTipo().equals(pallets.get(0).getMaterial().getTipo())) mesmoTipo = false;
+                if (!estoque.consumirPallet(p)) hardScore--;
                 pesoTotal += p.getPeso();
-                mediumScore += p.getScore();
+                mediumScore += p.getPontuacao();
             }
             if (pesoTotal > veiculo.getPesoMax() || pallets.size() > veiculo.getQuantidadeMax()){
                 hardScore--;
