@@ -15,10 +15,10 @@ public class EasyScore implements EasyScoreCalculator<Solucao, HardMediumSoftSco
 
     @Override
     public HardMediumSoftScore calculateScore(Solucao solucao) {
-	    List<Pallet> palletList = solucao.getPallets();
+        List<Pallet> palletList = solucao.getPallets();
         int hardScore = 0;
         int mediumScore = 0;
-	    int softScore = 0;
+        int softScore = 0;
 
         Map<Veiculo, List<Pallet>> palletsPorVeiculo = palletList.stream().collect(Collectors.groupingBy(p -> p.getVeiculo()));
         Estoque estoque = new Estoque();
@@ -27,25 +27,30 @@ public class EasyScore implements EasyScoreCalculator<Solucao, HardMediumSoftSco
             Veiculo veiculo = entry.getKey();
             List<Pallet> pallets = entry.getValue();
             boolean mesmoTipo = true;
+            boolean mesmaCidade = true;
             double pesoTotal = 0;
 
-            for (Pallet p : pallets){
+            for (Pallet p : pallets) {
                 if (!p.getMaterial().getTipo().equals(pallets.get(0).getMaterial().getTipo())) mesmoTipo = false;
+                if (!p.getCliente().getCidade().equals(pallets.get(0).getCliente().getCidade())) mesmaCidade = false;
                 if (!estoque.consumirPallet(p)) hardScore--;
                 pesoTotal += p.getPeso();
                 mediumScore += p.getPontuacao();
             }
-            if (pesoTotal > veiculo.getPesoMax() || pallets.size() > veiculo.getQuantidadeMax()){
+            if (pesoTotal > veiculo.getPesoMax() || pallets.size() > veiculo.getQuantidadeMax()) {
                 hardScore--;
             }
-            if (pesoTotal < veiculo.getPesoMin() && pallets.size() < veiculo.getQuantidadeMin()){
+            if (pesoTotal < veiculo.getPesoMin() && pallets.size() < veiculo.getQuantidadeMin()) {
                 hardScore--;
             }
-            if (!mesmoTipo){
+            if (!mesmoTipo) {
                 hardScore--;
             }
-            if (pallets.size() > 0){
-            softScore--;
+            if (!mesmaCidade) {
+                hardScore--;
+            }
+            if (pallets.size() > 0) {
+                softScore--;
             }
         }
         return HardMediumSoftScore.of(hardScore, mediumScore, softScore);
