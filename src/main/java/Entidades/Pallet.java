@@ -3,12 +3,14 @@ package Entidades;
 import Solucao.Cliente;
 import Solucao.Material;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
 import org.optaplanner.core.api.domain.variable.PlanningVariable;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @PlanningEntity
 public class Pallet {
 

@@ -7,8 +7,6 @@ import lombok.Setter;
 @Setter
 public class Veiculo {
 
-    private String destino;
-
     // Caracteristicas do veiculo
     private double pesoMax;
     private int quantidadeMax;

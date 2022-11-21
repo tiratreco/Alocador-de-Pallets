@@ -8,14 +8,22 @@
         <easyScoreCalculatorClass>Entidades.Calculadores.EasyScore</easyScoreCalculatorClass>
     </scoreDirectorFactory>
 
+    <constructionHeuristic>
+        <constructionHeuristicType>FIRST_FIT</constructionHeuristicType>
+    </constructionHeuristic>
+
+    <localSearch>
+        <termination>
+            <minutesSpentLimit>5</minutesSpentLimit>
+        </termination>
+        <localSearchType>HILL_CLIMBING</localSearchType>
+    </localSearch>
+
     <!-- Configure the optimization algorithms (optional) -->
     <!--
     <termination>
         ...
     </termination>
-    <constructionHeuristic>
-        ...
-    </constructionHeuristic>
     <localSearch>
         ...
     </localSearch>

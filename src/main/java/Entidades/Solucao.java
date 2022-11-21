@@ -2,6 +2,7 @@ package Entidades;
 
 import Solucao.Estoque;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.optaplanner.core.api.domain.solution.PlanningEntityCollectionProperty;
 import org.optaplanner.core.api.domain.solution.PlanningScore;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @PlanningSolution
 public class Solucao {
 
@@ -28,4 +30,8 @@ public class Solucao {
     private HardMediumSoftScore pontuacao;
 
     private Estoque estoque;
+
+    public String toString(){
+        return String.format("Solução com %d pallets e %d veiculos. Score %s", pallets.size(), veiculos.size(), pontuacao.toString());
+    }
 }
