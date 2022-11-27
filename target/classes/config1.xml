@@ -5,7 +5,14 @@
     <entityClass>Entidades.Pallet</entityClass>
 
     <scoreDirectorFactory>
+
+        <scoreDefinitionType>BENDABLE</scoreDefinitionType>
+
+        <bendableHardLevelCount>1</bendableHardLevelCount>
+        <bendableSoftLevelCount>3</bendableSoftLevelCount>
+
         <easyScoreCalculatorClass>Entidades.Calculadores.EasyScore</easyScoreCalculatorClass>
+
     </scoreDirectorFactory>
 
     <constructionHeuristic>
