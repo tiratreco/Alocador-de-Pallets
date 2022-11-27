@@ -29,14 +29,16 @@ public class Importador {
     private Map<String, Cliente> clienteMap;
     private Map<Material, Integer> estoqueMap;
     private List<Veiculo> veiculoList;
+    private Map<String, Double> pesoMap;
 
     public void lerArquivos() {
-        Reader reader1, reader2, reader3, reader4;
+        Reader reader1, reader2, reader3, reader4, reader5;
         try {
             reader1 = Files.newBufferedReader(Paths.get("data/palete.csv"));
             reader2 = Files.newBufferedReader(Paths.get("data/materiais.csv"));
             reader3 = Files.newBufferedReader(Paths.get("data/estoque.csv"));
             reader4 = Files.newBufferedReader(Paths.get("data/veiculo.csv"));
+            reader5 = Files.newBufferedReader(Paths.get("data/peso.csv"));
         } catch (Exception e) {
             LOGGER.error("Erro na abertura do arquivo!");
             return;
@@ -46,15 +48,18 @@ public class Importador {
         CSVReader csvReader2 = new CSVReaderBuilder(reader2).withCSVParser(parser).build();
         CSVReader csvReader3 = new CSVReaderBuilder(reader3).withCSVParser(parser).build();
         CSVReader csvReader4 = new CSVReaderBuilder(reader4).withCSVParser(parser).build();
+        CSVReader csvReader5 = new CSVReaderBuilder(reader5).withSkipLines(1).withCSVParser(parser).build();
         List<String[]> paletes;
         List<String[]> materiais;
         List<String[]> estoques;
         List<String[]> veiculos;
+        List<String[]> pesos;
         try {
             paletes = csvReader1.readAll();
             materiais = csvReader2.readAll();
             estoques = csvReader3.readAll();
             veiculos = csvReader4.readAll();
+            pesos = csvReader5.readAll();
         } catch (Exception e) {
             LOGGER.error("Erro na abertura do arquivo!");
             return;
@@ -124,19 +129,25 @@ public class Importador {
             palletList.add(p);
         }
 
-
         //lendo veiculos
         veiculoList = new ArrayList<>();
         for (String[] veiculo : veiculos) {
-            int num = Integer.parseInt(veiculo[5]);
+            int num = Integer.parseInt(veiculo[6]);
             for (int i = 0; i < num; i++) {
                 Veiculo v = new Veiculo();
                 v.setPesoMax(Double.parseDouble(veiculo[1]));
                 v.setPesoMin(Double.parseDouble(veiculo[2]));
                 v.setQuantidadeMax(Integer.parseInt(veiculo[3]));
                 v.setQuantidadeMin(Integer.parseInt(veiculo[4]));
+                v.setCusto(Integer.parseInt(veiculo[5]));
                 veiculoList.add(v);
             }
         }
+
+        pesoMap = new HashMap<>();
+        pesoMap.put("volume", Double.parseDouble(pesos.get(0)[0]));
+        pesoMap.put("cliente", Double.parseDouble(pesos.get(0)[1]));
+        pesoMap.put("material", Double.parseDouble(pesos.get(0)[2]));
+
     }
 }

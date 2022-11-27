@@ -12,4 +12,5 @@ public class Veiculo {
     private int quantidadeMax;
     private double pesoMin;
     private int quantidadeMin;
+    private int custo;
 }

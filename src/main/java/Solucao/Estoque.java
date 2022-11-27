@@ -3,8 +3,10 @@ package Solucao;
 import Entidades.Pallet;
 import lombok.Getter;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -15,16 +17,14 @@ public class Estoque {
 
     private Map<Material, Integer> estoque;
 
-    public Estoque(Map<Material, Integer> materiais) {
-        estoqueInicial = materiais;
-    }
+    public Estoque(Map<Material, Integer> materiais) { estoqueInicial = new HashMap<>(materiais); }
 
     public Estoque() {
         this.estoque = new HashMap<>(estoqueInicial);
     }
 
     public boolean existeEstoqueMaterial(Material material, int quantidade) {
-        return estoque.containsKey(material) ? estoque.get(material) >= quantidade : false;
+        return estoque.getOrDefault(material, 0) >= quantidade;
     }
 
     public Material existeEstoquePallet(Pallet pallet) {
@@ -40,6 +40,23 @@ public class Estoque {
         Material m = existeEstoquePallet(pallet);
         if (m == null) return false;
         estoque.put(m, estoque.get(m) - pallet.getCaixas());
+        return true;
+    }
+
+    public boolean consumirPallets(@NotNull List<Pallet> pallets){
+        Map<Material, Integer> quantidadeConsumida = new HashMap<>();
+        for (Pallet p : pallets){
+            Material m = existeEstoquePallet(p);
+            if (m == null) {
+                // devolver consumido
+                for (Map.Entry<Material,Integer> entry : quantidadeConsumida.entrySet()){
+                    estoque.put(entry.getKey(), estoque.get(entry.getKey()) + entry.getValue());
+                }
+                return false;
+            }
+            estoque.put(m, estoque.get(m) - p.getCaixas()); // consome
+            quantidadeConsumida.put(m, p.getCaixas());
+        }
         return true;
     }
 }

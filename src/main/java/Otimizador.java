@@ -20,11 +20,9 @@ public class Otimizador {
 
         Solucao solucaoInicial = new Solucao();
         new Estoque(importador.getEstoqueMap());
-        solucaoInicial.setEstoque(new Estoque());
-        solucaoInicial.setPallets(importador.getPalletList().stream().filter(p->solucaoInicial.getEstoque().existeEstoquePallet(p)!=null).collect(Collectors.toList()));
+        solucaoInicial.setPallets(importador.getPalletList());
         //solucaoInicial.setPallets(importador.getPalletList());
         solucaoInicial.setVeiculos(importador.getVeiculoList());
-
 
         File config = new File("config1.xml");
         SolverFactory<Solucao> solverFactory = SolverFactory.createFromXmlResource(config.toString());
