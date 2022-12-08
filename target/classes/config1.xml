@@ -11,12 +11,12 @@
         <bendableHardLevelCount>1</bendableHardLevelCount>
         <bendableSoftLevelCount>3</bendableSoftLevelCount>
 
-        <easyScoreCalculatorClass>Entidades.Calculadores.EasyScore</easyScoreCalculatorClass>
+        <easyScoreCalculatorClass>Entidades.Calculadores.EasyScore</easyScoreCalculatorClass>11ll
 
     </scoreDirectorFactory>
 
     <constructionHeuristic>
-        <constructionHeuristicType>FIRST_FIT</constructionHeuristicType>
+        <constructionHeuristicType>FIRST_FIT_DECREASING</constructionHeuristicType>
     </constructionHeuristic>
 
     <localSearch>

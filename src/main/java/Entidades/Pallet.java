@@ -1,5 +1,6 @@
 package Entidades;
 
+import Entidades.Extra.PalletComparator;
 import Solucao.Cliente;
 import Solucao.Material;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import org.optaplanner.core.api.domain.variable.PlanningVariable;
 @Getter
 @Setter
 @NoArgsConstructor
-@PlanningEntity
+@PlanningEntity(difficultyComparatorClass = PalletComparator.class)
 public class Pallet {
 
     @PlanningVariable(valueRangeProviderRefs = {"veiculoRange"}, nullable = true)

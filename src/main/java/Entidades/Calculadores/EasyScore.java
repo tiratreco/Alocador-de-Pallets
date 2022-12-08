@@ -47,12 +47,11 @@ public class EasyScore implements EasyScoreCalculator<Solucao, BendableScore> {
                     mediumScore += mediumScoreVeiculo;
                 } else {
                     mediumScoreFormados += mediumScoreVeiculo;
-                    softScore += veiculo.getCusto();
                 }
             }
 
+            softScore ++;
             hardScore += hardScoreVeiculo;
-
         }
 
         return BendableScore.of(new int[]{-hardScore}, new int[]{mediumScoreFormados, mediumScore, -softScore});
