@@ -6,19 +6,16 @@ import Solucao.Material;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
 @Getter
 @Setter
 public class ScoreCalculator {
-    private Map<Cliente, Integer> clientesPrioritarios;
-    private Map<Material, Integer> materiaisPrioritarios;
     private Map<String, Double> pesos;
 
-    public ScoreCalculator(Map<Cliente, Integer> clientesPrioritarios, Map<Material, Integer> materiaisPrioritarios, Map<String, Double> pesos) {
-        this.clientesPrioritarios = clientesPrioritarios;
-        this.materiaisPrioritarios = materiaisPrioritarios;
+    public ScoreCalculator(Map<String, Double> pesos) {
         this.pesos = pesos;
     }
 
@@ -26,25 +23,21 @@ public class ScoreCalculator {
         return ((100 * num) / max);
     }
 
-    public void calcularPontuacao(List<Pallet> pallets) {
+    public void calcularPontuacao(List<Pallet> pallets, List<Cliente> clienteList, List<Material> materialList) {
         Double maiorPeso = Double.MIN_VALUE;
         int maiorClientePrioritario = Integer.MIN_VALUE;
         int maiorMaterialPrioritario = Integer.MIN_VALUE;
         for (Pallet p : pallets) {
             maiorPeso = Double.max(maiorPeso, p.getPeso());
         }
-        for (Map.Entry<Cliente, Integer> entry : clientesPrioritarios.entrySet()) {
-            maiorClientePrioritario = Integer.max(maiorClientePrioritario, entry.getValue());
-        }
-        for (Map.Entry<Material, Integer> entry : materiaisPrioritarios.entrySet()) {
-            maiorMaterialPrioritario = Integer.max(maiorMaterialPrioritario, entry.getValue());
-        }
+        maiorClientePrioritario = clienteList.stream().max(Comparator.comparingInt(Cliente::getPrioridade)).get().getPrioridade();
+        maiorMaterialPrioritario = materialList.stream().max(Comparator.comparingInt(Material::getPrioridade)).get().getPrioridade();
 
         for (Pallet p : pallets) {
             p.setPontuacao((int) (
-                      normalizar(maiorPeso, p.getPeso())                                            //peso
-                    + normalizar(maiorClientePrioritario, clientesPrioritarios.get(p.getCliente())) //prioridade de cliente
-                    + normalizar(maiorClientePrioritario, clientesPrioritarios.get(p.getCliente())) //prioridade de material
+                      normalizar(maiorPeso, p.getPeso())                                   //peso
+                    + normalizar(maiorClientePrioritario, p.getCliente().getPrioridade())  //prioridade de cliente
+                    + normalizar(maiorMaterialPrioritario, p.getMaterial().getPrioridade()) //prioridade de material
                 )/3
             );
         }

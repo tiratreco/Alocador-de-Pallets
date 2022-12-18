@@ -12,4 +12,6 @@ public class Material {
     private String tipo;
 
     private List<Material> alternativo;
+
+    private int prioridade;
 }

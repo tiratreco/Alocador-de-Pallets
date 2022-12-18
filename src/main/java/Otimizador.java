@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 
@@ -35,12 +36,12 @@ public class Otimizador {
 
         Solucao solucaoInicial = new Solucao();
         new Estoque(importador.getEstoqueMap());
+        ScoreCalculator geradorDeScore = new ScoreCalculator(importador.getPesoMap());
+        geradorDeScore.calcularPontuacao(importador.getPalletList(), new ArrayList<>(importador.getClienteMap().values()), new ArrayList<>(importador.getMaterialMap().values()));
 
         solucaoInicial.setPallets(importador.getPalletList());
-        //solucaoInicial.setPallets(importador.getPalletList());
         solucaoInicial.setVeiculos(importador.getVeiculoList());
 
-        //ScoreCalculator geradorDeScore = new ScoreCalculator();
 
         return solucaoInicial;
     }

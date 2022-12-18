@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,13 +33,15 @@ public class Importador {
     private Map<String, Double> pesoMap;
 
     public void lerArquivos() {
-        Reader reader1, reader2, reader3, reader4, reader5;
+        Reader reader1, reader2, reader3, reader4, reader5, reader6, reader7;
         try {
             reader1 = Files.newBufferedReader(Paths.get("data/palete.csv"));
             reader2 = Files.newBufferedReader(Paths.get("data/materiais.csv"));
             reader3 = Files.newBufferedReader(Paths.get("data/estoque.csv"));
             reader4 = Files.newBufferedReader(Paths.get("data/veiculo.csv"));
             reader5 = Files.newBufferedReader(Paths.get("data/peso.csv"));
+            reader6 = Files.newBufferedReader(Paths.get("data/prioridadecliente.csv"));
+            reader7 = Files.newBufferedReader(Paths.get("data/prioridadematerial.csv"));
         } catch (Exception e) {
             LOGGER.error("Erro na abertura do arquivo!");
             return;
@@ -49,19 +52,25 @@ public class Importador {
         CSVReader csvReader3 = new CSVReaderBuilder(reader3).withCSVParser(parser).build();
         CSVReader csvReader4 = new CSVReaderBuilder(reader4).withCSVParser(parser).build();
         CSVReader csvReader5 = new CSVReaderBuilder(reader5).withSkipLines(1).withCSVParser(parser).build();
+        CSVReader csvReader6 = new CSVReaderBuilder(reader6).withCSVParser(parser).build();
+        CSVReader csvReader7 = new CSVReaderBuilder(reader7).withCSVParser(parser).build();
         List<String[]> paletes;
         List<String[]> materiais;
         List<String[]> estoques;
         List<String[]> veiculos;
         List<String[]> pesos;
+        List<String[]> prioridadeCliente;
+        List<String[]> prioridadeMaterial;
         try {
             paletes = csvReader1.readAll();
             materiais = csvReader2.readAll();
             estoques = csvReader3.readAll();
             veiculos = csvReader4.readAll();
-            pesos = csvReader5.readAll();
+            pesos = csvReader5.readAll();;
+            prioridadeCliente = csvReader6.readAll();;
+            prioridadeMaterial = csvReader7.readAll();
         } catch (Exception e) {
-            LOGGER.error("Erro na abertura do arquivo!");
+            LOGGER.error("Erro na abertura dos arquivos!");
             return;
         }
 
@@ -125,7 +134,6 @@ public class Importador {
             p.setPeso(Double.parseDouble(linha[4]));
             p.setCaixas(Integer.parseInt(linha[5]));
             p.setNumeroRemessa(linha[3].equals("null")?null:linha[3]);
-            p.setPontuacao(100);
             palletList.add(p);
         }
 
@@ -144,10 +152,30 @@ public class Importador {
             }
         }
 
+        //lendo prioridades
         pesoMap = new HashMap<>();
         pesoMap.put("volume", Double.parseDouble(pesos.get(0)[0]));
         pesoMap.put("cliente", Double.parseDouble(pesos.get(0)[1]));
         pesoMap.put("material", Double.parseDouble(pesos.get(0)[2]));
 
+        for (String[] linha : prioridadeCliente) {
+            try {
+                clienteMap.get(linha[0]).setPrioridade(Integer.parseInt(linha[1]));
+            } catch (NumberFormatException e) {
+                LOGGER.error(String.format("Erro ao converter prioridade: %s", linha[1]));
+            } catch (NullPointerException e) {
+                LOGGER.error(String.format("Erro - Cliente %s não encontrado", linha[0]));
+            }
+        }
+
+        for (String[] linha : prioridadeMaterial) {
+            try {
+                materialMap.get(linha[0]).setPrioridade(Integer.parseInt(linha[1]));
+            } catch (NumberFormatException e) {
+                LOGGER.error(String.format("Erro ao converter prioridade: %s", linha[1]));
+            } catch (NullPointerException e) {
+                LOGGER.error(String.format("Erro - Material %s não encontrado", linha[0]));
+            }
+        }
     }
 }

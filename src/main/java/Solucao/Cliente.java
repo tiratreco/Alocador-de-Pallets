@@ -12,4 +12,6 @@ public class Cliente {
     private String cidade;
 
     private boolean aceitaEstoqueAlternativo;
+
+    private int prioridade;
 }
